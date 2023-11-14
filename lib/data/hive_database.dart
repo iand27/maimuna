@@ -16,14 +16,23 @@ class HiveDatabase {
       List<dynamic> savedNotes = _myBox.get("ALL_NOTES");
       for (int i = 0; i < savedNotes.length; i++) {
         // buat catatan individu
-        Note individualNote =
-            Note(id: savedNotes[i][0], text: savedNotes[i][1]);
+        Note individualNote = Note(
+          id: savedNotes[i][0],
+          text: savedNotes[i][1],
+          time: savedNotes[i][2],
+        );
         // add ke list
         savedNotesFromatted.add(individualNote);
       }
-    } else {
-      savedNotesFromatted.add(Note(id: 0, text: 'Catatan Pertama'));
     }
+    // else {
+    //   savedNotesFromatted.add(
+    //     Note(
+    //       id: 0,
+    //       text: 'Catatan Pertama',
+    //     ),
+    //   );
+    // }
 
     return savedNotesFromatted;
   }
@@ -48,7 +57,8 @@ class HiveDatabase {
     for (var note in allNotes) {
       int id = note.id;
       String text = note.text;
-      allNotesFormatted.add([id, text]);
+      String time = note.time;
+      allNotesFormatted.add([id, text, time]);
     }
 
     // lalu simpan ke hive box

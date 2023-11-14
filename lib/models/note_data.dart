@@ -23,22 +23,26 @@ class NoteData extends ChangeNotifier {
   // add catatan baru
   void addNewNote(Note note) {
     allNotes.add(note);
+    db.savedNotes(allNotes);
     notifyListeners();
   }
 
   // update catatan
-  void updateNote(Note note, String text) {
+  void updateNote(Note note, String text, String time) {
     for (int i = 0; i < allNotes.length; i++) {
       if (allNotes[i].id == note.id) {
         allNotes[i].text = text;
+        allNotes[i].time = time;
       }
     }
+    db.savedNotes(allNotes);
     notifyListeners();
   }
 
   // hapus catatan
   void deleteNote(Note note) {
     allNotes.remove(note);
+    db.savedNotes(allNotes);
     notifyListeners();
   }
 }

@@ -24,10 +24,13 @@ class _HomePageState extends State<HomePage> {
   void createNewNote() {
     // buat id baru
     int id = Provider.of<NoteData>(context, listen: false).getAllNotes().length;
+    // datetime now
+
     // buat catatan  kosong
     Note newNote = Note(
       id: id,
       text: '',
+      time: '',
     );
 
     // go to edit catatan
@@ -62,33 +65,61 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           backgroundColor: Colors.grey[100],
           child: const Icon(
-            Icons.add,
+            Icons.note_alt_outlined,
             color: Colors.grey,
           ),
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // heading
-            const Padding(
-              padding: const EdgeInsets.only(top: 75.0, left: 25.0),
-              child: Text(
-                'Catatan',
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            Padding(
+              padding:
+                  // const EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'assets/images/maimuna.png',
+                    height: 32.0,
+                  ),
+                  Image.asset(
+                    'assets/images/lucas.png',
+                    height: 32.0,
+                  ),
+                ],
               ),
+            ),
+
+            // SPECIAL
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'You deserve all the good things \n my lovely girl',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.black54,
+                  ),
+                ),
+                Image.asset(
+                  'assets/images/lline.png',
+                  height: 16.0,
+                ),
+              ],
             ),
 
             // list catatan
             value.getAllNotes().length == 0
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
+                    padding: const EdgeInsets.only(top: 25.0),
                     child: Center(
                       child: Text(
-                        'Buat Catatanmu Maimuna :)',
+                        'Start Writing Maimuna :)',
                         style: TextStyle(
+                          fontSize: 12.0,
                           color: Colors.grey[400],
                         ),
                       ),
@@ -97,17 +128,52 @@ class _HomePageState extends State<HomePage> {
                 : CupertinoListSection.insetGrouped(
                     children: List.generate(
                       value.getAllNotes().length,
-                      (index) => CupertinoListTile(
-                        title: Text(value.getAllNotes()[index].text),
-                        onTap: () =>
-                            goToNotePage(value.getAllNotes()[index], false),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.grey[400],
+                      (index) => Dismissible(
+                        background: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.red,
                           ),
-                          onPressed: () =>
-                              deleteNote(value.getAllNotes()[index]),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                        key: UniqueKey(),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (DismissDirection direction) {
+                          setState(() {
+                            deleteNote(value.getAllNotes()[index]);
+                          });
+                        },
+                        child: CupertinoListTile(
+                          leading: Image.asset('assets/images/leaf02.png'),
+                          title: Text(
+                            value.getAllNotes()[index].text,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/leaf01.png',
+                                height: 10.0,
+                              ),
+                              SizedBox(width: 6.0),
+                              // Text('Waktu'),
+                              Text(value.getAllNotes()[index].time),
+                            ],
+                          ),
+                          onTap: () =>
+                              goToNotePage(value.getAllNotes()[index], false),
+                          // trailing: IconButton(
+                          //   icon: Icon(
+                          //     Icons.delete,
+                          //     color: Colors.grey[400],
+                          //   ),
+                          //   onPressed: () =>
+                          //       deleteNote(value.getAllNotes()[index]),
+                          // ),
                         ),
                       ),
                     ),

@@ -43,9 +43,22 @@ class _EditingNotePageState extends State<EditingNotePage> {
     int id = Provider.of<NoteData>(context, listen: false).getAllNotes().length;
     // get text dari editor
     String text = _controller.document.toPlainText();
+
+    // waktu
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    String datetime = tsdate.year.toString() +
+        "-" +
+        tsdate.month.toString() +
+        "-" +
+        tsdate.day.toString();
     // add catatan baru
     Provider.of<NoteData>(context, listen: false).addNewNote(
-      Note(id: id, text: text),
+      Note(
+        id: id,
+        text: text,
+        time: datetime,
+      ),
     );
   }
 
@@ -53,8 +66,17 @@ class _EditingNotePageState extends State<EditingNotePage> {
   void updateNote() {
     // get text dari editor
     String text = _controller.document.toPlainText();
+    // waktu
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    String datetime = tsdate.year.toString() +
+        "-" +
+        tsdate.month.toString() +
+        "-" +
+        tsdate.day.toString();
     // update catatan
-    Provider.of<NoteData>(context, listen: false).updateNote(widget.note, text);
+    Provider.of<NoteData>(context, listen: false)
+        .updateNote(widget.note, text, datetime);
   }
 
   @override
