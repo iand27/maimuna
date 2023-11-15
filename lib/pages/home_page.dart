@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../models/note.dart';
 import 'editing_note_page.dart';
+import 'from_me_to_you.dart';
+import 'novel_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           onPressed: createNewNote,
           elevation: 0,
-          backgroundColor: Colors.grey[100],
+          backgroundColor: Colors.transparent,
           child: const Icon(
             Icons.note_alt_outlined,
             color: Colors.grey,
@@ -74,19 +76,33 @@ class _HomePageState extends State<HomePage> {
           children: [
             // heading
             Padding(
-              padding:
-                  // const EdgeInsets.only(top: 15.0, left: 25.0, right: 25.0),
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+              padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    'assets/images/maimuna.png',
-                    height: 32.0,
+                  InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FromMeToYou(),
+                      ),
+                    ),
+                    child: Image.asset(
+                      'assets/images/maimuna.png',
+                      height: 32.0,
+                    ),
                   ),
-                  Image.asset(
-                    'assets/images/lucas.png',
-                    height: 32.0,
+                  InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NovelPage(),
+                      ),
+                    ),
+                    child: Image.asset(
+                      'assets/images/lucas.png',
+                      height: 32.0,
+                    ),
                   ),
                 ],
               ),
@@ -106,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Image.asset(
                   'assets/images/lline.png',
-                  height: 16.0,
+                  height: 20.0,
                 ),
               ],
             ),
@@ -125,55 +141,63 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   )
-                : CupertinoListSection.insetGrouped(
-                    children: List.generate(
-                      value.getAllNotes().length,
-                      (index) => Dismissible(
-                        background: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                          ),
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                        ),
-                        key: UniqueKey(),
-                        direction: DismissDirection.endToStart,
-                        onDismissed: (DismissDirection direction) {
-                          setState(() {
-                            deleteNote(value.getAllNotes()[index]);
-                          });
-                        },
-                        child: CupertinoListTile(
-                          leading: Image.asset('assets/images/leaf02.png'),
-                          title: Text(
-                            value.getAllNotes()[index].text,
-                            style: TextStyle(
-                              fontSize: 14.0,
+                : Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: SingleChildScrollView(
+                        child: CupertinoListSection.insetGrouped(
+                          children: List.generate(
+                            value.getAllNotes().length,
+                            (index) => Dismissible(
+                              background: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                ),
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              key: UniqueKey(),
+                              direction: DismissDirection.endToStart,
+                              onDismissed: (DismissDirection direction) {
+                                setState(() {
+                                  deleteNote(value.getAllNotes()[index]);
+                                });
+                              },
+                              child: CupertinoListTile(
+                                leading:
+                                    Image.asset('assets/images/leaf02.png'),
+                                title: Text(
+                                  value.getAllNotes()[index].text,
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                                subtitle: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/leaf01.png',
+                                      height: 10.0,
+                                    ),
+                                    SizedBox(width: 6.0),
+                                    // Text('Waktu'),
+                                    Text(value.getAllNotes()[index].time),
+                                  ],
+                                ),
+                                onTap: () => goToNotePage(
+                                    value.getAllNotes()[index], false),
+                                // trailing: IconButton(
+                                //   icon: Icon(
+                                //     Icons.delete,
+                                //     color: Colors.grey[400],
+                                //   ),
+                                //   onPressed: () =>
+                                //       deleteNote(value.getAllNotes()[index]),
+                                // ),
+                              ),
                             ),
                           ),
-                          subtitle: Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/leaf01.png',
-                                height: 10.0,
-                              ),
-                              SizedBox(width: 6.0),
-                              // Text('Waktu'),
-                              Text(value.getAllNotes()[index].time),
-                            ],
-                          ),
-                          onTap: () =>
-                              goToNotePage(value.getAllNotes()[index], false),
-                          // trailing: IconButton(
-                          //   icon: Icon(
-                          //     Icons.delete,
-                          //     color: Colors.grey[400],
-                          //   ),
-                          //   onPressed: () =>
-                          //       deleteNote(value.getAllNotes()[index]),
-                          // ),
                         ),
                       ),
                     ),

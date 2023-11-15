@@ -21,6 +21,7 @@ class EditingNotePage extends StatefulWidget {
 
 class _EditingNotePageState extends State<EditingNotePage> {
   QuillController _controller = QuillController.basic();
+  int timestamp = DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
     String text = _controller.document.toPlainText();
 
     // waktu
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    // int timestamp = DateTime.now().millisecondsSinceEpoch;
     DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
     String datetime = tsdate.year.toString() +
         "-" +
@@ -67,7 +68,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
     // get text dari editor
     String text = _controller.document.toPlainText();
     // waktu
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    // int timestamp = DateTime.now().millisecondsSinceEpoch;
     DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
     String datetime = tsdate.year.toString() +
         "-" +
@@ -100,7 +101,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
 
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_new),
           color: Colors.black,
         ),
       ),
